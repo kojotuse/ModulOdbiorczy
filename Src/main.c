@@ -53,6 +53,7 @@
 #include "radio.h"
 #include "usbd_cdc_if.h"
 #include "delay.h"
+#include "RF24.h"
 
 /* USER CODE END Includes */
 
@@ -110,7 +111,11 @@ int main(void)
   initRadio();
 //  MsgLength = sprintf(DataToSend, "RADIO inited.\n\r");
 //  CDC_Transmit_FS(DataToSend, MsgLength);
-  uint8_t buff;
+  uint8_t buff[8] = {1,2,3,4,5,6,7,8};
+  uint8_t info[8] = {0};
+  setPayloadSize(4);
+  setCRCLength(RF24_CRC_16);
+//  disableCRC();
 //  delayMicroseconds(100);
   /* USER CODE END 2 */
 
@@ -121,10 +126,23 @@ int main(void)
 //	  MsgLength = sprintf(DataToSend, "T: %d.\n\r", getMicroSeconds());
 //	  CDC_Transmit_FS(DataToSend, MsgLength);
 //	  SPIReadByte(0x07, &buff);
-	  HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_SET);
-	  delayMicroseconds(25000);
-	  HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
-	  delayMicroseconds(225000);
+//	  HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_SET);
+//	  delayMicroseconds(25000);
+//	  HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
+//	  delayMicroseconds(225000);
+	  readRadioRegisters(TX_ADDR, info, 5 );
+	  readRadioRegisters(RX_ADDR_P0, info, 5 );
+	  readRadioRegisters(RX_ADDR_P1, info, 5 );
+	  writeRadio(buff,4);
+	  uint8_t ret = readRadioRegister(STATUS);
+	  delayMicroseconds(1000000);
+	  clearInterruptFlag(true, true, true);
+	  ret = readRadioRegister(STATUS);
+	  delayMicroseconds(ret);
+//	  stopListening();
+//	  readRadio(buff, 8);
+//	  startListening();
+
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */

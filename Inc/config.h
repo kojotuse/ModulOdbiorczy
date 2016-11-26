@@ -41,7 +41,10 @@
 #define RADIO_CHANNEL                           88  //channel at which you want to communicate through
 #define PAYLOAD_SIZE                            8   //size of the data from master to slave
 #define PAYLOAD_MAX_SIZE                        32
-#define DEFAULT_ADDRESS                         0xF0F0F0F0D000
+//#define DEFAULT_ADDRESS                         0xF0F0F0F0D000
+//#define DEFAULT_ADDRESS                         0xA1A2A3A4A5A6
+#define DEFAULT_ADDRESS                         0x324E6F6465
+#define DEFAULT_ADDRESS2                        0x314E6F6465
 #define REFRESH_RATE                            60  //in Hz
 #define REFRESH_PERIOD                          (uint32_t)(1000/REFRESH_RATE)
 #define COMMUNICATION_TIMEOUT                   4000 //in ms

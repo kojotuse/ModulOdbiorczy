@@ -51,6 +51,8 @@
 
 /* Private define ------------------------------------------------------------*/
 
+#define NRF_IRQ_Pin GPIO_PIN_1
+#define NRF_IRQ_GPIO_Port GPIOA
 #define NRF_CE_Pin GPIO_PIN_2
 #define NRF_CE_GPIO_Port GPIOA
 #define NFR_CSN_Pin GPIO_PIN_3
