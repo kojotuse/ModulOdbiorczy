@@ -113,10 +113,14 @@ int main(void)
 //  CDC_Transmit_FS(DataToSend, MsgLength);
   uint8_t buff[8] = {1,2,3,4,5,6,7,8};
   uint8_t info[8] = {0};
-  setPayloadSize(4);
+  uint8_t data[8] = {0};
+//  setPayloadSize(4);
   setCRCLength(RF24_CRC_16);
 //  disableCRC();
 //  delayMicroseconds(100);
+
+  uint8_t pipe0 = 0;
+  uint8_t pipe1 = 1;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -133,12 +137,22 @@ int main(void)
 	  readRadioRegisters(TX_ADDR, info, 5 );
 	  readRadioRegisters(RX_ADDR_P0, info, 5 );
 	  readRadioRegisters(RX_ADDR_P1, info, 5 );
-	  writeRadio(buff,4);
+//	  writeRadio(buff,4);
+	  if(availableRadio(pipe0))
+	  {
+		readRadio(data, 8);
+	  }
+	  if(availableRadio(pipe1))
+	  {
+		readRadio(data, 8);
+	  }
 	  uint8_t ret = readRadioRegister(STATUS);
-	  delayMicroseconds(1000000);
-	  clearInterruptFlag(true, true, true);
-	  ret = readRadioRegister(STATUS);
-	  delayMicroseconds(ret);
+//	  delayMicroseconds(1000000);
+//	  clearInterruptFlag(true, true, true);
+//	  ret = readRadioRegister(STATUS);
+//	  delayMicroseconds(ret);
+
+
 //	  stopListening();
 //	  readRadio(buff, 8);
 //	  startListening();

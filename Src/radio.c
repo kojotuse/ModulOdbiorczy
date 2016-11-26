@@ -1,6 +1,7 @@
 #include "radio.h"
 
 bool isRadioInitialized = false;
+volatile bool radioEvent = false;
 
 /*============================================================================
 Name    :   initRadio
@@ -23,12 +24,11 @@ bool initRadio()
 //            if (DEBUG_ENABLED())
 //                debug_printf("RF successfully initialized, configuring...\n");
 
-//            initOK &= setChannel(RADIO_CHANNEL);
-        	initOK &= setChannel(0);
+            initOK &= setChannel(RADIO_CHANNEL);
             initOK &= setAutoAck(true);
-//            initOK &= setAutoAck(false);
             initOK &= setDataRate(RF24_1MBPS);
 //            initOK &= enableAckPayload();
+            setPayloadSize(PAYLOAD_SIZE);
 
 
 
@@ -42,10 +42,10 @@ bool initRadio()
 //            uint8_t *addr = "2Node";
 
 //            openWritingPipe(addr);
-            openReadingPipe(0, DEFAULT_ADDRESS);
-            openReadingPipe(1, DEFAULT_ADDRESS2);
+//            openReadingPipe(0, DEFAULT_ADDRESS);
+//            openReadingPipe(1, DEFAULT_ADDRESS);
 //            openReadingPipe(1, "2Node");
-//            startListening();
+            startListening();
 
             isRadioInitialized = true;
         }
@@ -83,4 +83,10 @@ void selectRobot(Robot *r)
         openWritingPipe(r->pipeAddress);
         openReadingPipe(0, r->pipeAddress);
     }
+}
+
+
+HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+	radioEvent = true;
 }
