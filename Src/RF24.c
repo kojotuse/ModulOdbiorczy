@@ -60,9 +60,9 @@ bool initNRF24L01P()
     // Set 1500uS (minimum for 32B payload in ESB@250KBPS) timeouts, to make testing a little easier
     // WARNING: If this is ever lowered, either 250KBS mode with AA is broken or maximum packet
     // sizes must never be used. See documentation for a more complete explanation.
-    initOK &= setRetries(2, 15); //15 tries, 2x250us delay
+    initOK &= setRetries(4, 15); //15 tries, 2x250us delay
     // Restore our default PA level
-    initOK &= setPALevel(RF24_PA_MAX);
+    initOK &= setPALevel(RF24_PA_LOW);
     // Determine if this is a p or non-p RF24 module and then
     // reset our data rate back to default value. This works
     // because a non-P variant won't allow the data rate to
@@ -75,7 +75,8 @@ bool initNRF24L01P()
     initOK &= setInterruptSource(true, true, true);
     // Then set the data rate to the slowest (and most reliable) speed supported by all
     // hardware.
-    initOK &= setDataRate(RF24_1MBPS);
+//    initOK &= setDataRate(RF24_1MBPS);
+
     // Initialize CRC and request 2-byte (16bit) CRC
     initOK &= setCRCLength(RF24_CRC_16);
     // Disable dynamic payloads, to match dynamic_payloads_enabled setting
@@ -88,7 +89,7 @@ bool initNRF24L01P()
     // Set up default configuration.  Callers can always change it later.
     // This channel should be universally safe and not bleed over into adjacent
     // spectrum.
-    initOK &= setChannel(76);
+    initOK &= setChannel(0x20);
 
 
     //enable pipe0

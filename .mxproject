@@ -1,7 +1,7 @@
 [PreviousGenFiles]
-HeaderPath=C:/Users/US2/Documents/GitHub/ModulOdbiorczy/Inc
+HeaderPath=C:/Users/Pawel/Desktop/Praca_magisterska/firmware/ModulOdbiorczy/Inc
 HeaderFiles=gpio.h;spi.h;usb_device.h;usbd_conf.h;usbd_desc.h;usbd_cdc_if.h;stm32f4xx_it.h;stm32f4xx_hal_conf.h;main.h;dma.h;tim.h;
-SourcePath=C:/Users/US2/Documents/GitHub/ModulOdbiorczy/Src
+SourcePath=C:/Users/Pawel/Desktop/Praca_magisterska/firmware/ModulOdbiorczy/Src
 SourceFiles=gpio.h;spi.h;usb_device.h;usbd_conf.h;usbd_desc.h;usbd_cdc_if.h;stm32f4xx_it.h;stm32f4xx_hal_conf.h;main.h;gpio.c;spi.c;usb_device.c;usbd_conf.c;usbd_desc.c;usbd_cdc_if.c;stm32f4xx_it.c;stm32f4xx_hal_msp.c;main.c;stm32f4xx_hal_timebase_TIM.c;dma.h;dma.c;tim.h;tim.c;
 
 [PreviousLibFiles]

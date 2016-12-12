@@ -107,20 +107,51 @@ int main(void)
 //  MsgLength = sprintf(DataToSend, "Robim radio.\n\r");
 //  CDC_Transmit_FS(DataToSend, MsgLength);
 
-
+  delayMicroseconds(150000);
   initRadio();
-//  MsgLength = sprintf(DataToSend, "RADIO inited.\n\r");
-//  CDC_Transmit_FS(DataToSend, MsgLength);
-  uint8_t buff[8] = {1,2,3,4,5,6,7,8};
-  uint8_t info[8] = {0};
-  uint8_t data[8] = {0};
-//  setPayloadSize(4);
-  setCRCLength(RF24_CRC_16);
-//  disableCRC();
-//  delayMicroseconds(100);
 
-  uint8_t pipe0 = 0;
-  uint8_t pipe1 = 1;
+  uint8_t buff[32] = {'x', 'y', 'z', 'w',5,6,7,8,1,2,3,4,5,6,7,8,1,2,3,4,5,6,7,8,1,2,3,4,5,6,7,8};
+  uint8_t info[8] = {0};
+
+  //  setPayloadSize(4);
+  setCRCLength(RF24_CRC_16);
+  SPIWriteRegister(RF_SETUP | W_REGISTER, 0x5);
+  SPIWriteRegister(RX_PW_P0 | W_REGISTER, 0x08);
+  SPIWriteRegister(RX_PW_P1 | W_REGISTER, 0x08);
+  SPIWriteRegister(EN_RXADDR | W_REGISTER, 0x03);
+//  SPIWriteRegister(SETUP_RETR | W_REGISTER, 0x00);
+//  setDataRate(RF24_1MBPS);
+
+  //  disableCRC();
+//  delayMicroseconds(100);
+  powerUp();
+  uint8_t ret = readRadioRegister(CONFIG);
+  ret = readRadioRegister(EN_AA);
+  ret = readRadioRegister(EN_RXADDR);
+  ret = readRadioRegister(RF_CH);
+
+  ret = readRadioRegister(SETUP_AW);
+  ret = readRadioRegister(SETUP_RETR);
+  ret = readRadioRegister(RF_SETUP);
+  ret = readRadioRegister(STATUS);
+  ret = readRadioRegister(OBSERVE_TX);
+  ret = readRadioRegister(CD);
+  ret = readRadioRegister(RX_PW_P0);
+  ret = readRadioRegister(RX_PW_P1);
+  ret = readRadioRegister(RX_PW_P2);
+  ret = readRadioRegister(RX_PW_P3);
+  ret = readRadioRegister(RX_PW_P4);
+  ret = readRadioRegister(RX_PW_P5);
+  ret = readRadioRegister(FIFO_STATUS);
+  ret = readRadioRegister(DYNPD);
+  ret = readRadioRegister(FEATURE);
+
+  stopListening();
+
+  readRadioRegisters(TX_ADDR, info, 5 );
+  readRadioRegisters(RX_ADDR_P0, info, 5 );
+  readRadioRegisters(RX_ADDR_P1, info, 5 );
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -134,22 +165,21 @@ int main(void)
 //	  delayMicroseconds(25000);
 //	  HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
 //	  delayMicroseconds(225000);
-	  readRadioRegisters(TX_ADDR, info, 5 );
-	  readRadioRegisters(RX_ADDR_P0, info, 5 );
-	  readRadioRegisters(RX_ADDR_P1, info, 5 );
+
+
 //	  writeRadio(buff,4);
-	  if(availableRadio(pipe0))
-	  {
-		readRadio(data, 8);
-	  }
-	  if(availableRadio(pipe1))
-	  {
-		readRadio(data, 8);
-	  }
-	  uint8_t ret = readRadioRegister(STATUS);
-//	  delayMicroseconds(1000000);
-//	  clearInterruptFlag(true, true, true);
-//	  ret = readRadioRegister(STATUS);
+	  HAL_GPIO_TogglePin(LED_ORANGE_GPIO_Port, LED_ORANGE_Pin);
+	  SPIWriteRegister(FLUSH_RX, 0x00);
+	  SPIWriteRegister(FLUSH_TX, 0x00);
+	  SPIWriteRegisters(W_TX_PAYLOAD, 4, buff);
+	  ret = readRadioRegister(STATUS);
+	  ce(HIGH);
+	  delayMicroseconds(5);
+	  ce(LOW);
+	  ret = readRadioRegister(STATUS);
+	  delayMicroseconds(1000000);
+	  clearInterruptFlag(true, true, true);
+	  ret = readRadioRegister(STATUS);
 //	  delayMicroseconds(ret);
 
 
